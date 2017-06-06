@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="lib/index.css">
+</head>
+<body>
+	<header class="header">
+		<h1>todoList</h1>
+		<ul class="todo-list">
+		</ul>
+	</header>
+	<container>
+		<div class="pagination p1">
+      		<ul class="page-nav">
+				<a id="five-left" class="arrow grow disabled" href="#"><li>|<</li></a>
+				<a id="one-left" class="arrow grow disabled" href="#"><li><</li></a>
+				<a class="selected page-num" href="#"><li>1</li></a>
+				<a class="page-num" href="#"><li>2</li></a>
+				<a class="page-num" href="#"><li>3</li></a>
+				<a class="page-num" href="#"><li>4</li></a>
+				<a class="page-num" href="#"><li>5</li></a>
+				<a id="one-right" class="arrow grow" href="#"><li>></li></a>
+				<a id="five-right" class="arrow grow disabled" href="#"><li>>|</li></a>
+      		</ul>
+   	 	</div>
+	</container>
+
+	<script id="entry-template" type="text/x-handlebars-template">
+		{{#if tasks}}
+		{{#each tasks}}
+			{{> task}}
+		{{/each}}
+		{{else}}
+			<li>
+				등록된 TODO가 없습니다.
+			</li>
+		{{/if}}
+	</script>
+
+	<script id="task-partial" type="text/x-handlebars-template">
+		<li {{#if completed}}style="text-decoration: line-through; color: #ddd;"{{/if}}data-id="{{id}}" class="item">{{todo}}</li>
+	</script>
+
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/handlebars/dist/handlebars.min.js"></script>
+	<script src="node_modules/es-event-emitter/dist/bundle.js"></script>
+	<script src="src/template.js"></script>
+	<script src="src/pagenav.js"></script>
+	<script src="src/app.js"></script>
+</body>
+</html>
