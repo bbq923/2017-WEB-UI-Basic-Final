@@ -1,6 +1,6 @@
 function PageNavigation() {
     this._curPage = $(".selected");
-    this._pageIdx = this._curPage.find("li")[0].text;
+    this._pageIdx = $(".selected").find("li")[0].textContent;
     this._leftArrow = $("#one-left");
     this._rightArrow = $("#one-right");
     this.ee = new EventEmitter();
@@ -9,27 +9,30 @@ function PageNavigation() {
 
 PageNavigation.prototype.init = function() {
     $(".page-nav a.page-num li").on("click", this.click.bind(this));
-    $("#one-right").on("click", this.moveRight);
-    $("#one-left").on("click", this.moveLeft);
+    $("#one-right").on("click", this.moveRight.bind(this));
+    $("#one-left").on("click", this.moveLeft.bind(this));
 }
 
 PageNavigation.prototype.click = function(e) {
     this._curPage.removeClass("selected");
     this._curPage = $(e.target).parent();
     this._curPage.addClass("selected");
-    this._pageIdx = this._curPage.find("li")[0].text;
+    this._pageIdx = this._curPage.find("li")[0].textContent;
 
     this.disableArrow();
 
-    console.log("hello init");
     this.ee.emit("move", {
-        index: 0,
+        index: (this._pageIdx - 1) * 3,
         max: 3
-    })
+    }, this.getIndex(), 3);
+}
+
+PageNavigation.prototype.getIndex = function() {
+    return (this._pageIdx - 1) * 3;
 }
 
 PageNavigation.prototype.moveRight = function(e) {
-    if(!this._curPage.parent().hasClass("disabled")) {
+    if(!$("#one-right").hasClass("disabled")) {
         this.click({
             target: $(".selected").next().find("li")[0]
         });
@@ -37,7 +40,7 @@ PageNavigation.prototype.moveRight = function(e) {
 }
 
 PageNavigation.prototype.moveLeft = function(e) {
-    if(!this._curPage.parent().hasClass("disabled")) {
+    if(!$("#one-left").hasClass("disabled")) {
         this.click({
             target: $(".selected").prev().find("li")[0]
         });
@@ -59,7 +62,5 @@ PageNavigation.prototype.disableArrow = function() {
 }
 
 PageNavigation.prototype.on = function(event, handler) {
-    console.log(this.ee);
-    console.log(handler);
     this.ee.on(event, handler);
 }
